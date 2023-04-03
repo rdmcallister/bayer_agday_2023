@@ -54,7 +54,7 @@ Agriculture}
 
 }
 
-\begin{frame}{My background: Plants}
+\begin{frame}{My background: Optimal control of plants}
 
 \centering
 \begin{tikzpicture}[font=\normalsize]
@@ -107,7 +107,8 @@ Agriculture}
 	\draw[->,>=stealth,line width=2pt] (2,5) -- (3,5);
 	\node at (5,5) {\includegraphics[width=0.25\linewidth]{greenhouse.jpg}};
 	\draw[->,>=stealth,line width=2pt] (7,5) -- (8,5);
-	\node[align=center] at (9.5,5) {T, RH\%, CO\textsubscript{2} \\ Biomass};
+	\node[align=center] at (9.5,5) {T, RH\%, CO\textsubscript{2} \\ Biomass, 
+	$\dots$};
 
 	\draw[->,>=stealth,line width=2pt] (2,8) -| (5,6.5);
 	\node[align=center] {};
@@ -280,18 +281,203 @@ Agriculture}
 	
 \end{frame}
 
-\begin{frame}{Applications to CEA}
-	Figures to show idea of mix-match models
+\begin{frame}{Applications to CEA: Models}
+	\begin{equation*}
+		x^+ =  \color{pgreen}p_i(x,u,d)\color{black} + 
+		\color{porange}g_j(x,u,d)\color{porange}
+	\end{equation*}
+
+	\vspace{-0.5cm}
+	\begin{columns}
+		\begin{column}{0.45\linewidth}
+			\begin{block}{Plant model: $\color{pgreen}p_i(\cdot)$}
+				\begin{itemize}
+					\item Location: Centralized
+					\item Data: Months to a year
+					\item Cost: High
+				\end{itemize}
+			\end{block}
+		\end{column}
+		\begin{column}{0.45\linewidth}
+			\begin{block}{Greenhouse model: $\color{porange}g_j(\cdot)$}
+				\begin{itemize}
+					\item Location: Decentralized
+					\item Data: Days
+					\item Cost: Low
+				\end{itemize}
+			\end{block}
+		\end{column}
+	\end{columns}
+
+	\vspace{0.5cm}
+	\centering
+	\begin{tikzpicture}[circle dotted/.style={dash pattern=on .05mm off 6mm,
+			line cap=round}]
+		\greenhouse{(0,0)}{2}{2}
+		\draw[->,>=stealth,line width = 2pt] (-2,1) -- node[above] 
+		{$\color{pgreen}p_i(\cdot)$} (0,1);
+		\node at (-3,1) {\includegraphics[width=2cm]{lettuce.png}};
+		\draw[->,>=stealth,line width = 2pt] (2,1) -- node[above] 
+		{Data} (4,1);
+		\draw[line width=2pt] (4,0.5) rectangle (6,1.5) 
+		node[align=center, pos=.5] {$\color{porange}g_j(\cdot)$};
+	\end{tikzpicture}
 \end{frame}
 
-\begin{frame}{A natural hierarchy}
-	(1) What conditions maximization plant growth with minimum energy cost? 
-	(Grower) (2) 
-	How do we realize these conditions (rule-based/heuristic control)? 
+\begin{frame}{Optimal control}
+	\begin{equation*}
+		V_{\infty}(x) := \min_{u(0),\dots} \ \sum_{k=0}^{\infty} 
+		\underbrace{\ell(x(k),u(k))}_{Cost} \quad 
+		\textnormal{s.t. } \ \underbrace{x^+ 
+		= f(x,u)}_{Model}
+	\end{equation*}
+	\begin{columns}
+		\begin{column}{0.45\linewidth}
+			\begin{block}{Reinforcement learning (RL)}
+				\begin{itemize}
+					\item Approximate via parameterization $\theta$
+					\begin{equation*}
+						V_{\infty}(x) \approx \tilde{V}(x;\theta)
+					\end{equation*}
+					\item Allows ``black-box'' models
+					\item Better for long time-scales
+				\end{itemize}
+			\end{block}
+		\end{column}
+		\begin{column}{0.45\linewidth}
+			\begin{block}{Model predictive control (MPC)}
+				\begin{itemize}
+					\item Approximate via finite horizon $N$
+					\begin{equation*}
+						V_{\infty}(x) \approx V_{N}(x)
+					\end{equation*}
+					\item Requires differentiable models
+					\item Better for short time-scales
+				\end{itemize}
+			\end{block}
+		\end{column}
+	\end{columns}
 \end{frame}
 
-\begin{frame}{A tool for every job}
+\begin{frame}{A natural hierarchy for plants}
+	\centering
+	\begin{columns}
+		\begin{column}{0.45\linewidth}
+			\centering
+			\begin{tikzpicture}
+				\draw[line width = 1.6pt,black] (0,5) rectangle (5,6) 
+				node[midway,black,align=center] {Real Time Optimization \\ 
+					(hours-days)};
+				\draw[->,line width=2pt,>=stealth] (4,5) -- (4,4.5);
+				\draw[->,line width=2pt,>=stealth] (1,4.5) -- (1,5);
+				\draw[line width = 1.6pt] (0,3.5) rectangle (5,4.5)
+				node[midway,black,align=center] {Advanced Control \\ (minutes)};
+				\draw[->,line width=2pt,>=stealth] (4,3.5) -- (4,3);
+				\draw[->,line width=2pt,>=stealth] (1,3) -- (1,3.5);
+				\draw[line width = 1.6pt] (0,2) rectangle (5,3)
+				node[midway,black,align=center] {Regulatory Control \\ 
+				(seconds)};
+				\draw[->,line width=2pt,>=stealth] (1.25,0.75) -| (0.5,2);
+				\draw[->,line width=2pt,>=stealth] (4.5,2) |- (3.75,0.75);
+				\node[align=center] at 
+				(2.5,0.75){\includegraphics[width=2.5cm]{BasfNightshot.jpg}};
+			\end{tikzpicture}
+		\end{column}
+		
+		\begin{column}{0.45\linewidth}
+			\centering
+			\begin{tikzpicture}
+				\draw[line width = 1.6pt,black] (0,5) rectangle (5,6) 
+				node[midway,black,align=center] {Grower 
+				\\ 
+					(hours-days)};
+				\draw[->,line width=2pt,>=stealth] (4,5) -- (4,4.5);
+				\draw[->,line width=2pt,>=stealth] (1,4.5) -- (1,5);
+				\draw[line width = 1.6pt] (0,3.5) rectangle (5,4.5)
+				node[midway,black,align=center] {Climate Computer \\ (minutes)};
+				\draw[->,line width=2pt,>=stealth] (4,3.5) -- (4,3);
+				\draw[->,line width=2pt,>=stealth] (1,3) -- (1,3.5);
+				\draw[line width = 1.6pt] (0,2) rectangle (5,3)
+				node[midway,black,align=center] {Regulatory Control \\ 
+					(seconds)};
+				\draw[->,line width=2pt,>=stealth] (1.25,0.75) -| (0.5,2);
+				\draw[->,line width=2pt,>=stealth] (4.5,2) |- (3.75,0.75);
+				\node[align=center] at 
+				(2.5,0.75){\includegraphics[width=2.5cm]{greenhouse.jpg}};
+				\node[align=center,opacity=0] at 
+				(2.5,0.75){\includegraphics[width=2.5cm]{BasfNightshot.jpg}};
+			\end{tikzpicture}
+		\end{column}
+	\end{columns}
+\end{frame}
+
+\begin{frame}{Communication between layers}
 	
+	\centering
+	\begin{columns}
+	\begin{column}{0.45\linewidth}
+		\begin{enumerate}
+			\item Keep the hierarchy
+			\begin{itemize}
+				\item Grower: \\ Human $\rightarrow$ RL
+				\item Climate Computer: \\ Heuristics $\rightarrow$ MPC
+			\end{itemize}
+			\onslide<2->{
+			\item Integrate the layers
+			\begin{itemize}
+				\item Communication between RL and MPC
+				\item Easier said than done...
+			\end{itemize}
+			}
+		\end{enumerate}
+	\end{column}
+	
+	\begin{column}{0.45\linewidth}
+		\centering
+			\begin{tikzpicture}
+				\draw[line width = 1.6pt,black] (0,5) rectangle (5,6) 
+				node[midway,black,align=center] {Grower 
+					\\ 
+					(hours-days)};
+				\draw[->,line width=2pt,>=stealth] (4,5) -- (4,4.5);
+				\draw[->,line width=2pt,>=stealth] (1,4.5) -- (1,5);
+				\draw[line width = 1.6pt] (0,3.5) rectangle (5,4.5)
+				node[midway,black,align=center] {Climate Computer \\ (minutes)};
+				\draw[->,line width=2pt,>=stealth] (4,3.5) -- (4,3);
+				\draw[->,line width=2pt,>=stealth] (1,3) -- (1,3.5);
+				\draw[line width = 1.6pt] (0,2) rectangle (5,3)
+				node[midway,black,align=center] {Regulatory Control \\ 
+					(seconds)};
+				\draw[->,line width=2pt,>=stealth] (1.25,0.75) -| (0.5,2);
+				\draw[->,line width=2pt,>=stealth] (4.5,2) |- (3.75,0.75);
+				\node[align=center] at 
+				(2.5,0.75){\includegraphics[width=2.5cm]{greenhouse.jpg}};
+				\node[align=center,opacity=0] at 
+				(2.5,0.75){\includegraphics[width=2.5cm]{BasfNightshot.jpg}};
+				
+				\onslide<2->{
+				
+				}
+			\end{tikzpicture}
+		\end{column}
+	\end{columns}
+\end{frame}
+
+\begin{frame}{Integrating RL and MPC}
+	\begin{enumerate}
+		\item Solve for the RL cost $\tilde{V}(x;\theta)$ and controller.
+		\item Use the RL cost in the MPC cost function as a \textit{terminal 
+		cost}: 
+		\begin{equation*}
+			\min_{u(0),\dots,u(N-1)} \sum_{k=0}^{N-1} \ell(x(k),u(k)) + 
+			\tilde{V}(x(N);\theta)
+		\end{equation*}
+		\begin{itemize}
+			\item The MPC controller now sees what the RL controller sees past 
+			the horizon $N$. 
+			\item Solving this optimization problem is typically intractable
+		\end{itemize} 
+	\end{enumerate}
 \end{frame}
 
 
