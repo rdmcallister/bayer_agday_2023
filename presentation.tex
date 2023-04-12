@@ -42,7 +42,7 @@
 Agriculture}
 \institute[]{Delft University of Technology, The Netherlands}
 \author{Robert D. (Koty) McAllister}
-%\date{}
+\date{Bayer Digital Ag Day \\ April 18, 2023}
 
 \begin{document}
 {
@@ -105,25 +105,33 @@ Agriculture}
 	\node[align=center] at (0.5,5) {Heat/cool \\ Light \\ Dehumidify \\ 
 	CO\textsubscript{2} Injection};
 	\draw[->,>=stealth,line width=2pt] (2,5) -- (3,5);
+	\only<1>{
 	\node at (5,5) {\includegraphics[width=0.25\linewidth]{greenhouse.jpg}};
+	}
+	\only<2->{
+		\node[opacity=0.1] at (5,5) 
+		{\includegraphics[width=0.25\linewidth]{greenhouse.jpg}};
+		\draw[line width=2pt] (3.15,3.7) rectangle (6.85,6.3);
+		\node at (5,5) {\Large$x^+ = f(x,u,d)$};
+	}
 	\draw[->,>=stealth,line width=2pt] (7,5) -- (8,5);
 	\node[align=center] at (9.5,5) {T, RH\%, CO\textsubscript{2} \\ Biomass, 
 	$\dots$};
 
-	\draw[->,>=stealth,line width=2pt] (2,8) -| (5,6.5);
+	\draw[->,>=stealth,line width=2pt] (2,7.5) -| (5,6.5);
 	\node[align=center] {};
 	
 	\draw [very thick, decorate,decoration={brace,amplitude=8pt}] (1.7,4) -- 
 	(-0.7,4) node[align=center,pos=0.5,below=10pt] {\Large $u$};
 	\draw [very thick, decorate,decoration={brace,amplitude=8pt}] (10.7,4) -- 
 	(8.3,4) node[align=center,pos=0.5,below=10pt] {\Large $x$};
-	\draw [very thick, decorate,decoration={brace,amplitude=8pt}] (-1.2,7) -- 
-	(-1.2,9) node[align=center,pos=0.5,left=10pt] {\Large $d$};
+	\draw [very thick, decorate,decoration={brace,amplitude=8pt}] (-1.2,6.5) -- 
+	(-1.2,8.5) node[align=center,pos=0.5,left=10pt] {\Large $d$};
 	\begin{scope}
 		[
 		ax/.style={thick, draw=black, cap=rect,line width=1pt},
 		xshift=-1cm,
-		yshift=7cm,
+		yshift=6.5cm,
 		yscale=0.5,
 		xscale=0.5,
 		]
@@ -149,15 +157,10 @@ Agriculture}
 		{(0,1) (0.5,0.9) (1,1.1) (1.5,1.3) (2,1.4) (2.5,1.4) (3,1.6) (3.5,1.4) 
 		(4,1.1) (4.3,1)};
 		\node[color=pgreen,right] at (4.3,1) {RH\textsubscript{a}};
-		%		\node[color=porange,right] at (8,1.8) {$\textrm{Pr}(T_a(t))$};
 	\end{scope}
-	%			\node[align=center] at (6.5,-2.5) {$\begin{aligned}
-			%					\min \ & \sum_{k=0}^{N-1}\ell(x(k),u(k),k) \\  
-			%					\textrm{s.t. } & x(k+1) = f(x(k),u(k),k) \\
-			%					& (x(k),u(k))\in\mathbb{Z}(k)
-			%			\end{aligned}$};
 	
 	\end{tikzpicture}
+
 \end{frame}
 
 \newcommand{\greenhouse}[3]{
@@ -168,7 +171,7 @@ Agriculture}
 
 \begin{frame}{Why is the CEA problem so difficult?}
 	\centering
-	\begin{tikzpicture}[circle dotted/.style={dash pattern=on .05mm off 6mm,
+	\begin{tikzpicture}[circle dotted/.style={dash pattern=on .05mm off 4mm,
 			line cap=round}]
 		\greenhouse{(0,0)}{2}{2}
 		\draw[->,>=stealth,line width = 2pt] (1,-1) -- (1,0.5);
@@ -178,14 +181,14 @@ Agriculture}
 		\greenhouse{(5,0)}{1.5}{1.5}
 		\draw[->,>=stealth,line width = 2pt] (1,-1) -- (3.5,0.5);
 		\draw[->,>=stealth,line width = 2pt] (1,-1) -- (5.75,0.5);
-		\draw[line width = 2mm,circle dotted] (7.5,1) -- (9,1);
+		\draw[line width = 1.5mm,circle dotted] (7.5,1) -- (9,1);
 		}
 		
 		\onslide<3->{
 		\node at (3.5,-2) {\includegraphics[width=2cm]{tomato.png}};
 		\node at (6,-2) {\includegraphics[width=1.5cm]{cucumber.png}};
 		
-		\draw[line width = 2mm,circle dotted] (7.5,-2) -- (9,-2);
+		\draw[line width = 1.5mm,circle dotted] (7.5,-2) -- (9,-2);
 		}
 	\end{tikzpicture}
 	\onslide<4->{
@@ -202,10 +205,12 @@ Agriculture}
 	\vspace{0.3cm} 
 	
 	\centering
-	\begin{tikzpicture}[font=\footnotesize]
+	\begin{tikzpicture}[font=\footnotesize,circle dotted/.style={dash 
+	pattern=on .05mm off 4mm,line cap=round}]
 
+		\only<1-3>{
 		\draw[line width=2pt,name=sys] (0,0) rectangle (1.5,1) 
-		node[align=center, pos=.5] {System};
+		node[align=center, pos=.5] {System 1};
 		\draw[line width=2pt,name=data] (2.25,0) rectangle (3.75,1) 
 		node[align=center,pos=.5] {Data}; 
 		\draw[line width=2pt, ->,>=stealth,color=red] (1.5,2) 
@@ -215,10 +220,16 @@ Agriculture}
 		\draw[line width=2pt, ->,>=stealth] (8.25,0.5) -- (9,0.5) 
 		node[right] {Deploy!};
 		
-		\only<1>{
+		\draw[line width=2pt, ->,>=stealth,opacity=0] (1.5,-4) 
+		node[left,align=center] 
+		{\textbf{Engineering} \\ \textbf{judgment}} -| (3,-3);
+		
+		}
+		
+		\only<1-2>{
 		\draw[line width=2pt, ->,>=stealth] (3.75,0.5) -- (4.5,0.5);
 		\draw[line width=2pt, ->,>=stealth] (6,0.5) -- (6.75,0.5);
-		\node[align=center,font=\large] at (-2,1) {Model-based \\ controller 
+		\node[align=center,font=\large] at (-2,-1) {Model-based \\ controller 
 			design};
 		\draw[line width=2pt] (4.5,0) rectangle (6,1) 
 		node[align=center,pos=.5] {Model}; 
@@ -226,57 +237,108 @@ Agriculture}
 		node[align=center,pos=.5] {Controller \\ design};
 		\draw[line width=2pt, ->,>=stealth,color=red] (2,2) -| (5.25,1);
 		\draw[line width=2pt, ->,>=stealth,color=red] (2,2) -| (7.5,1);
+		
+		}
+	
+		\only<2>{
+		\draw[line width=2pt, ->,>=stealth] (3.75,-2.5) -- (4.5,-2.5);
+		\draw[line width=2pt, ->,>=stealth] (6,-2.5) -- (6.75,-2.5);
+		\draw[line width=2pt] (4.5,-3) rectangle (6,-2) 
+		node[align=center,pos=.5] {Model}; 
+		\draw[line width=2pt] (6.75,-3) rectangle (8.25,-2) 
+		node[align=center,pos=.5] {Controller \\ design};
+		\draw[line width=2pt, ->,>=stealth,color=red] (2,-4) -| (5.25,-3);
+		\draw[line width=2pt, ->,>=stealth,color=red] (2,-4) -| (7.5,-3);
+		\draw[line width = 1mm,circle dotted] (5.25,-0.5) -- (5.25,-1.5);
+		\draw[line width = 1mm,circle dotted] (7.5,-0.5) -- (7.5,-1.5);
+		
+		}
+	
+		\only<2-3>{
+			
+		\draw[line width=2pt,name=sys] (0,-3) rectangle (1.5,-2) 
+		node[align=center, pos=.5] {System N};
+		\draw[line width=2pt,name=data] (2.25,-3) rectangle (3.75,-2) 
+		node[align=center,pos=.5] {Data}; 
+		\draw[line width=2pt, ->,>=stealth,color=red] (1.5,-4) 
+		node[left,align=center] 
+		{\textbf{Engineering} \\ \textbf{judgment}} -| (3,-3);
+		\draw[line width=2pt, ->,>=stealth] (1.5,-2.5) -- (2.25,-2.5);
+		\draw[line width=2pt, ->,>=stealth] (8.25,-2.5) -- (9,-2.5) 
+		node[right] {Deploy!};
+		
+		\draw[line width = 1mm,circle dotted] (0.75,-0.5) -- (0.75,-1.5);
+		\draw[line width = 1mm,circle dotted] (3,-0.5) -- (3,-1.5);
+		
+		
 		}
 		
-		\only<2->{
-		\node[align=center,font=\large] at (-2,1) {\emph{Model-free} \\ 
+		\only<3>{
+		\node[align=center,font=\large] at (-2,-1) {\emph{Model-free} \\ 
 				controller design};
 		\draw[line width=2pt] (4.5, 0) rectangle (8.25, 1) 
 		node[align=center,pos=0.5] {\emph{Model-free} controller 
 		\\ design (RL, DD-MPC)};
 		\draw[line width=2pt, ->,>=stealth] (3.75,0.5) -- (4.5,0.5);
 		\draw[line width=2pt, ->,>=stealth,color=red] (2,2) -| (6.325,1);
+		
+		\draw[line width=2pt] (4.5, -3) rectangle (8.25, -2) 
+		node[align=center,pos=0.5] {\emph{Model-free} controller 
+			\\ design (RL, DD-MPC)};
+		\draw[line width=2pt, ->,>=stealth] (3.75,-2.5) -- (4.5,-2.5);
+		\draw[line width=2pt, ->,>=stealth,color=red] (2,-4) -| (6.325,-3);
+		\draw[line width = 1mm,circle dotted] (6.325,-0.5) -- (6.325,-1.5);
+		
 		}
 		
-		\draw[dashed] (-0.5,-0.5) -- (11,-0.5);
+		%\draw[dashed] (-0.5,-0.5) -- (11,-0.5);
 		
-		\begin{scope}[yshift=-3.2cm]
-			\only<3->{
-				\node[align=center,font=\large] at (-2,1) {Modular \\ 
-				controller design};
-				\draw[line width=2pt, ->,>=stealth] (1.5,0.5) 
-				node[left,align=center] {Application} -- (2.25,0.5);
-				\draw[line width=2pt, ->,>=stealth,color=red] (1.5,2) 
-				node[left,align=center] {\textbf{Engineering} \\ 
-				\textbf{judgment}} -| (3.75,1);
-				\draw[line width=2pt,name=sys] (2.25,0) rectangle (5.25,1) 
-				node[align=center, pos=.5] {Controller synthesis \\ procedure 
-				(CSP)};
-				
-				\draw[line width=2pt] (6.5,1.25) rectangle (7.75,2) 
-				node[align=center, pos=.5] {Sys. 1};
-				\draw[line width=2pt, ->,>=stealth] (7.75,1.625) -- (8.5,1.625);
-				\draw[line width=2pt] (8.5,1.25) rectangle (9.75,2) 
-				node[align=center, pos=.5] {CSP};
-				\draw[line width=2pt, ->,>=stealth] (9.75,1.625) -- 
-				(10.5,1.625) 
-				node[right] {Deploy!};
-				
-				\node[align=center] at (7.125,1) {\Large $\vdots$};
-				\node[align=center] at (9.125,1) {\Large $\vdots$};
-				\node[align=center] at (11.15,1) {\Large $\vdots$};
-				
-				\draw[line width=2pt] (6.5,-0.25) rectangle (7.75,0.5) 
-				node[align=center, pos=.5] {Sys. N};
-				\draw[line width=2pt, ->,>=stealth] (7.75,0.125) -- (8.5,0.125);
-				\draw[line width=2pt] (8.5,-0.25) rectangle (9.75,0.5) 
-				node[align=center, pos=.5] {CSP};
-				\draw[line width=2pt, ->,>=stealth] (9.75,0.125) -- 
-				(10.5,0.125) 
-				node[right] {Deploy!};
-			}
-			\draw[dashed,opacity=0] (-0.5,-0.3) -- (12,-0.3);
-		\end{scope}
+		%\begin{scope}[yshift=-3.2cm]
+		\only<4-5>{
+			\node[align=center,font=\large] at (-2,-1) {Modular \\ 
+			controller design};
+			\draw[line width=2pt, ->,>=stealth,color=pblue] (1.5,-3) 
+			node[left,align=center] {\textbf{Application}} -| 
+			(2.5,-1.5);
+			\draw[line width=2pt, ->,>=stealth,color=red] (1.5,1) 
+			node[left,align=center] {\textbf{Engineering} \\ 
+			\textbf{judgment}} -| (2.5,-0.5);
+			\draw[line width=2pt,name=sys] (1,-1.5) rectangle (4,-0.5) 
+			node[align=center, pos=.5] {Controller synthesis \\ procedure 
+			(CSP)};
+			\draw[line width=2pt, ->,>=stealth,opacity=0] (8.25,-2.5) -- 
+			(9,-2.5) 
+			node[right] {Deploy!};
+			
+			\draw[line width=1pt, dashed] (4.5,2) -- (4.5,-4);
+			
+		}
+	
+		\only<5>{
+		\draw[line width=2pt] (5,0) rectangle (6.25,1) 
+		node[align=center, pos=.5] {Sys. 1};
+		\draw[line width=2pt, ->,>=stealth] (6.25,0.5) -- (7,0.5);
+		\draw[line width=2pt] (7,0) rectangle (8.25,1) 
+		node[align=center, pos=.5] {CSP};
+		\draw[line width=2pt, ->,>=stealth] (8.25,0.5) -- 
+		(9,0.5) 
+		node[right] {Deploy!};
+		
+		\draw[line width=2pt] (5,-3) rectangle (6.25,-2) 
+		node[align=center, pos=.5] {Sys. N};
+		\draw[line width=2pt, ->,>=stealth] (6.25,-2.5) -- (7,-2.5);
+		\draw[line width=2pt] (7,-3) rectangle (8.25,-2) 
+		node[align=center, pos=.5] {CSP};
+		\draw[line width=2pt, ->,>=stealth] (8.25,-2.5) -- 
+		(9,-2.5) 
+		node[right] {Deploy!};	
+		
+		\draw[line width = 1mm,circle dotted] (5.625,-0.5) -- (5.625,-1.5);
+		\draw[line width = 1mm,circle dotted] (7.625,-0.5) -- (7.625,-1.5);
+		
+		}
+			%\draw[dashed,opacity=0] (-0.5,-0.3) -- (12,-0.3);
+		%\end{scope}
 	\end{tikzpicture}
 	
 \end{frame}
@@ -293,7 +355,7 @@ Agriculture}
 			\begin{block}{Plant model: $\color{pgreen}p_i(\cdot)$}
 				\begin{itemize}
 					\item Location: Centralized
-					\item Data: Months to a year
+					\item Data: Months
 					\item Cost: High
 				\end{itemize}
 			\end{block}
@@ -325,6 +387,10 @@ Agriculture}
 \end{frame}
 
 \begin{frame}{Optimal control}
+	
+\end{frame}
+
+\begin{frame}{RL and MPC}
 	\begin{equation*}
 		V_{\infty}(x) := \min_{u(0),\dots} \ \sum_{k=0}^{\infty} 
 		\underbrace{\ell(x(k),u(k))}_{Cost} \quad 
@@ -366,12 +432,13 @@ Agriculture}
 			\centering
 			\begin{tikzpicture}
 				\draw[line width = 1.6pt,black] (0,5) rectangle (5,6) 
-				node[midway,black,align=center] {Real Time Optimization \\ 
+				node[midway,black,align=center] {Setpoint Optimization \\ 
 					(hours-days)};
 				\draw[->,line width=2pt,>=stealth] (4,5) -- (4,4.5);
 				\draw[->,line width=2pt,>=stealth] (1,4.5) -- (1,5);
 				\draw[line width = 1.6pt] (0,3.5) rectangle (5,4.5)
-				node[midway,black,align=center] {Advanced Control \\ (minutes)};
+				node[midway,black,align=center] {Supervisory Control \\ 
+				(minutes)};
 				\draw[->,line width=2pt,>=stealth] (4,3.5) -- (4,3);
 				\draw[->,line width=2pt,>=stealth] (1,3) -- (1,3.5);
 				\draw[line width = 1.6pt] (0,2) rectangle (5,3)
@@ -463,6 +530,10 @@ Agriculture}
 	\end{columns}
 \end{frame}
 
+\begin{frame}{RL: How complicated does it need to be?}
+	content...
+\end{frame}
+
 \begin{frame}{Integrating RL and MPC}
 	\begin{enumerate}
 		\item Solve for the RL cost $\tilde{V}(x;\theta)$ and controller.
@@ -475,7 +546,8 @@ Agriculture}
 		\begin{itemize}
 			\item The MPC controller now sees what the RL controller sees past 
 			the horizon $N$. 
-			\item Solving this optimization problem is typically intractable
+			\item Solving this optimization problem is typically intractable, 
+			but there is a way forward with local approximations!
 		\end{itemize} 
 	\end{enumerate}
 \end{frame}
