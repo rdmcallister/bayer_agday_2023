@@ -21,6 +21,8 @@
 \usetikzlibrary{pgfplots.groupplots}
 \usetikzlibrary{patterns}
 
+%\usefonttheme[onlymath]{serif}
+
 \definecolor{pblue}{rgb}{0.12156863,  0.46666667,  0.70588235}
 \definecolor{porange}{rgb}{1.        ,  0.49803922,  0.054901965}
 \definecolor{pgreen}{rgb}{0.17254902,  0.62745098,  0.17254902}
@@ -40,7 +42,8 @@
 
 \title[]{Data-Driven and Modular Control \\ for Controlled Environment 
 Agriculture}
-\institute[]{Delft University of Technology, The Netherlands}
+\institute[]{\includegraphics[width=3cm]{TUDelft_logo_rgb.png} \\ Delft Center 
+for Systems and Control (DCSC)}
 \author{Robert D. (Koty) McAllister}
 \date{Bayer Digital Ag Day \\ April 18, 2023}
 
@@ -82,7 +85,7 @@ Agriculture}
 	
 	\scoped[on background layer]{\draw [ rounded 
 	corners=10mm,draw=pgreen,fill=pgreen!30,opacity=0,line width= 2pt] 
-	(-1.4,-4.5) rectangle (13.3,1.8);}
+	(-1.4,-4.5) rectangle (13.4,1.8);}
 	\only<4->{
 		\node[align=center,name=c] at (5.9,-3) 
 		{\includegraphics[width=0.25\linewidth]{greenhouse.jpg}};
@@ -90,7 +93,7 @@ Agriculture}
 		\node[align=center] at (9.9,-3) {Time-scale \\ separation};
 		\scoped[on background layer]{\draw [ rounded 
 		corners=10mm,draw=pgreen,fill=pgreen!30,opacity=0.5,line width= 2pt] 
-		(-1.4,-4.5) rectangle (13.3,1.8);}
+		(-1.4,-4.5) rectangle (13.4,1.8);}
 	}
 \end{tikzpicture}
 
@@ -348,8 +351,8 @@ Agriculture}
 \begin{frame}{Applications to CEA: Models}
 	\onslide<2->{
 	\begin{equation*}
-		f(x,u,d) = \color{pgreen}p_i(x,u,d)\color{black} + 
-			\color{porange}g_j(x,u,d)\color{black}
+		f(x,u,d) = \color{pgreen}p(x,u,d)\color{black} + 
+			\color{porange}g(x,u,d)\color{black}
 	\end{equation*}
 	}
 
@@ -357,7 +360,7 @@ Agriculture}
 	\onslide<2->{
 	\begin{columns}
 		\begin{column}{0.45\linewidth}
-			\begin{block}{Plant model: $\color{pgreen}p_i(x,u,d)$}
+			\begin{block}{Plant model: $\color{pgreen}p(x,u,d)$}
 				\begin{itemize}
 					\item High complexity
 					\item High data requirements
@@ -366,7 +369,7 @@ Agriculture}
 			\end{block}
 		\end{column}
 		\begin{column}{0.45\linewidth}
-			\begin{block}{Greenhouse model: $\color{porange}g_j(x,u,d)$}
+			\begin{block}{Greenhouse model: $\color{porange}g(x,u,d)$}
 				\begin{itemize}
 					\item Low complexity
 					\item Moderate data requirements
@@ -401,10 +404,10 @@ Agriculture}
 		\onslide<3->{
 		\draw[->,>=stealth,line width = 2pt] (6,1) -- (8,1) 
 			node[right,color=porange] 
-			{$g_j(x,u,d)$};
+			{$g(x,u,d)$};
 		\draw[->,>=stealth,line width = 2pt] (-2,2.3) -| (5,1.5);
 		\draw[line width = 2pt] (-3,2) |- (-1,2.3);
-		\node[color=pgreen] at (1,2.6) {$p_i(x,u,d)$};
+		\node[color=pgreen] at (1,2.6) {$p(x,u,d)$};
 		}
 	\end{tikzpicture}
 \end{frame}
@@ -482,9 +485,10 @@ Agriculture}
 		\begin{block}{Infinite horizon problem}
 		\begin{equation*}
 			V_{\infty}(x_0) := \min_{u_0,u_1,\dots} \ \sum_{k=0}^{\infty} 
-			\underbrace{\ell(x_k,u_k)}_{\textnormal{Stage Cost}} \quad 
-			\textnormal{such that } \ \underbrace{x_{k+1} 
-				= f(x_k,u_k)}_{\textnormal{Model}}
+			\underbrace{\ell(x_k,u_k)}_{\textnormal{Stage Cost}} 
+%			\quad 
+%			\textnormal{such that } \ \underbrace{x_{k+1} 
+%				= f(x_k,u_k)}_{\textnormal{Model}}
 		\end{equation*}
 		\end{block}
 	}
@@ -508,12 +512,7 @@ Agriculture}
 						V_{\infty}(x_0) \approx V_{N}(x_0)
 					\end{equation*}
 					\item Requires differentiable models
-					\item Better for:
-					\begin{itemize}
-						\item Shorter time-scales
-						\item Large state/input 
-						dimension
-					\end{itemize}
+					\item Works well for systems with moderate time-scales
 				\end{itemize}
 			\end{block}
 		\end{column}
@@ -526,11 +525,7 @@ Agriculture}
 						V_{\infty}(x_0) \approx \tilde{V}(x_0;\theta)
 					\end{equation*}
 					\item Allows for ``black-box'' systems
-					\item Better for:
-					\begin{itemize}
-						\item Longer time-scales
-						\item Small state/input dimension
-					\end{itemize} 
+					\item Works well for system with longer time-scales
 				\end{itemize}
 			\end{block}
 		\end{column}
@@ -614,11 +609,7 @@ Agriculture}
 			\item Climate Computer: \\ Rule-based $\rightarrow$ 
 			MPC
 			\onslide<3->{
-			\item Integrate the layers
-			\begin{itemize}
-				\item Communication between RL and MPC
-				\item Easier said than done...
-			\end{itemize}
+			\item What should RL and MPC communicate to each other? 
 			}
 		\end{itemize}
 	\end{column}
@@ -661,59 +652,28 @@ Agriculture}
 	\end{columns}
 \end{frame}
 
-\begin{frame}{RL: How complicated does it need to be?}
-	How to best parameterize $\tilde{V}(x;\theta)$?
-	\begin{itemize}
-		\item The most general, least transparent option: Deep neural networks 
-	\begin{equation*}
-		\tilde{V}(x;\theta) = h_{NN}(x;\theta) 
-	\end{equation*}
-	\pause
-		\item A more transparent approach that exploits domain knowledge: 
-		Basis functions
-	\begin{equation*}
-		\tilde{V}(x;\theta) = \sum_{i=1}^{n}\theta_i \phi_i(x)
-	\end{equation*}
-		\begin{itemize}
-			\item Choose $\phi_i(x)$ to represent relevant properties, e.g., 
-			radiation-to-temperature ratio (RTR), photosynthetic rate, solar 
-			daily light integral (DLI), $\dots$ 
-			\item Tetris is a classic example of this approach.
-		\end{itemize}
-	\end{itemize}
-\end{frame}
-
-\begin{frame}{Integrating RL and MPC}
-	\begin{enumerate}
-		\item Solve for the RL cost $\tilde{V}(x;\theta)$ and controller.
-		\item Use the RL cost in the MPC cost function as a \textit{terminal 
-		cost}: 
-		\begin{equation*}
-			\min_{u_0,\dots,u_{N-1}} \sum_{k=0}^{N-1} \ell(x_k,u_k) + 
-			\tilde{V}(x_N;\theta)
-		\end{equation*}
-		\begin{itemize}
-			\item The MPC controller now sees what the RL controller sees past 
-			the horizon $N$. 
-			\item Solving this optimization problem is typically intractable, 
-			but there is a way forward with local approximations!
-		\end{itemize} 
-	\end{enumerate}
-\end{frame}
-
 \begin{frame}{Looking forward: Data-driven and modular controller design}
 	\begin{itemize}
 		\item Centralized plant models; local greenhouse models
 		\pause
-		\item RL for high level, long-term decisions
+		\item RL for high-level, long-term decisions
 		\pause
-		\item MPC for mid level, medium-term decisions
+		\item MPC for mid-level, medium-term decisions
 		\pause
-		\item Basis functions for explainable RL
-		\pause
-		\item RL-aware MPC formulations
+		\item Research questions:
+		\begin{itemize}
+			\pause
+			\item Algorithms to identify local greenhouse models from data and 
+			provided plant model
+			\pause
+			\item Intelligent communication between RL and MPC layers
+			\pause
+			\item Including domain knowledge in RL for more data-efficient and 
+			explainable results
+		\end{itemize}
 	\end{itemize}
 
+	\pause
 	\bigskip
 
 	\begin{center}
@@ -725,6 +685,50 @@ Agriculture}
 	\end{center}
 \end{frame}
 
+\begin{frame}[noframenumbering]{Integrating RL and MPC}
+	\begin{enumerate}
+		\item Solve for the RL cost $\tilde{V}(x;\theta)$ and higher-level 
+		controller with a highly detailed plant model.
+		\pause
+		\item Use the RL cost in the MPC cost function as a \textit{terminal 
+			cost}: 
+		\begin{equation*}
+			\min_{u_0,\dots,u_{N-1}} \sum_{k=0}^{N-1} \ell(x_k,u_k) + 
+			\tilde{V}(x_N;\theta)
+		\end{equation*}
+		\item Solve the MPC problem with a lower detailed plant model
+		\begin{itemize}
+			\pause
+			\item The MPC controller now sees what the RL controller sees past 
+			the horizon $N$. 
+			\pause
+			\item Solving this optimization problem is typically intractable, 
+			but there is a way forward with local approximations!
+		\end{itemize} 
+	\end{enumerate}
+\end{frame}
 
+
+\begin{frame}[noframenumbering]{RL: How complicated does it need to be?}
+	How to best parameterize $\tilde{V}(x;\theta)$?
+	\begin{itemize}
+		\item The most general, least transparent option: Deep neural networks 
+		\begin{equation*}
+			\tilde{V}(x;\theta) = h_{NN}(x;\theta) 
+		\end{equation*}
+		\pause
+		\item A more transparent approach that exploits domain knowledge: 
+		Basis functions
+		\begin{equation*}
+			\tilde{V}(x;\theta) = \sum_{i=1}^{n}\theta_i \phi_i(x)
+		\end{equation*}
+		\begin{itemize}
+			\item Choose $\phi_i(x)$ to represent relevant properties, e.g., 
+			radiation-to-temperature ratio (RTR), photosynthetic rate, solar 
+			daily light integral (DLI), $\dots$ 
+			\item Tetris is a classic example of this approach.
+		\end{itemize}
+	\end{itemize}
+\end{frame}
 
 \end{document}
