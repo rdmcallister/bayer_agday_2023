@@ -485,7 +485,7 @@ for Systems and Control (DCSC)}
 		\begin{block}{Infinite horizon problem}
 		\begin{equation*}
 			V_{\infty}(x_0) := \min_{u_0,u_1,\dots} \ \sum_{k=0}^{\infty} 
-			\underbrace{\ell(x_k,u_k)}_{\textnormal{Stage Cost}} 
+			\ell(x_k,u_k)
 %			\quad 
 %			\textnormal{such that } \ \underbrace{x_{k+1} 
 %				= f(x_k,u_k)}_{\textnormal{Model}}
@@ -559,16 +559,16 @@ for Systems and Control (DCSC)}
 						(seconds)};
 				}
 				
-				\onslide<3->{
-					\draw[line width = 1.6pt,black] (0,5) rectangle (5,6) 
-					node[midway,black,align=center] {Nonlinear 
-					Optimization};
-					\draw[line width = 1.6pt] (0,3.5) rectangle (5,4.5)
-					node[midway,black,align=center] {\emph{Linear}
-					MPC};
-					\draw[line width = 1.6pt] (0,2) rectangle (5,3)
-					node[midway,black,align=center] {PID \& Rules-based};
-				}
+%				\onslide<3->{
+%					\draw[line width = 1.6pt,black] (0,5) rectangle (5,6) 
+%					node[midway,black,align=center] {Nonlinear 
+%					Optimization};
+%					\draw[line width = 1.6pt] (0,3.5) rectangle (5,4.5)
+%					node[midway,black,align=center] {\emph{Linear}
+%					MPC};
+%					\draw[line width = 1.6pt] (0,2) rectangle (5,3)
+%					node[midway,black,align=center] {PID \& Rules-based};
+%				}
 			\end{tikzpicture}
 		\end{column}
 		\pause
